@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     posts: Post;
     media: Media;
+    'plural-forms': PluralForm;
     'payload-kv': PayloadKv;
     users: User;
     'payload-locked-documents': PayloadLockedDocument;
@@ -79,6 +80,7 @@ export interface Config {
   collectionsSelect: {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'plural-forms': PluralFormsSelect<false> | PluralFormsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -130,11 +132,21 @@ export interface UserAuthOperations {
 export interface Post {
   id: string;
   title?: string | null;
-  content?:
-    | {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
         [k: string]: unknown;
-      }[]
-    | null;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -181,6 +193,39 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plural-forms".
+ */
+export interface PluralForm {
+  id: string;
+  title?: string | null;
+  group?: {
+    field1?: string | null;
+    field2?: string | null;
+    field3?: string | null;
+    field4?: string | null;
+    field5?: string | null;
+    field6?: string | null;
+    field7?: string | null;
+    field8?: string | null;
+    field9?: string | null;
+    field10?: string | null;
+    field11?: string | null;
+    field12?: string | null;
+    field13?: string | null;
+    field14?: string | null;
+    field15?: string | null;
+    field16?: string | null;
+    field17?: string | null;
+    field18?: string | null;
+    field19?: string | null;
+    field20?: string | null;
+    field21?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -239,6 +284,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'plural-forms';
+        value: string | PluralForm;
       } | null)
     | ({
         relationTo: 'users';
@@ -346,6 +395,40 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plural-forms_select".
+ */
+export interface PluralFormsSelect<T extends boolean = true> {
+  title?: T;
+  group?:
+    | T
+    | {
+        field1?: T;
+        field2?: T;
+        field3?: T;
+        field4?: T;
+        field5?: T;
+        field6?: T;
+        field7?: T;
+        field8?: T;
+        field9?: T;
+        field10?: T;
+        field11?: T;
+        field12?: T;
+        field13?: T;
+        field14?: T;
+        field15?: T;
+        field16?: T;
+        field17?: T;
+        field18?: T;
+        field19?: T;
+        field20?: T;
+        field21?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
